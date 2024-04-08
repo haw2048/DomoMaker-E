@@ -87,7 +87,7 @@ const DomoList = (props) => {
                     <h3 className="domoName">Name: {domo.name}</h3>
                     <h3 className="domoFood">Favorite Food: {domo.food}</h3>
                     <h3 className="domoAge">Age: {domo.age}</h3>
-                    <input className="makeDomoSubmit" type="submit" value="Delete" />
+                    <input className="makeDomoDelete" type="submit" value="Delete" />
 
                 </div>
             </form>

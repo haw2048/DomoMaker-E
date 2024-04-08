@@ -54,9 +54,9 @@ const deleteDomo = async (req, res) => {
   };
 
   try {
-     await Domo.deleteOne(domoData);
-    
-     return res.json({ redirect: '/maker' });
+    await Domo.deleteOne(domoData);
+
+    return res.json({ redirect: '/maker' });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {

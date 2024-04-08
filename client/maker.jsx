@@ -22,6 +22,16 @@ const handleDomo = (e, onDomoAdded) => {
 
 }
 
+const handleDelete = (e, onDomoAdded, domo) => {
+    e.preventDefault();
+    helper.hideError();
+
+    helper.sendDelete(e.target.action, domo, onDomoAdded);
+
+    return false;
+
+}
+
 const DomoForm = (props) => {
     return (
         <form id="domoForm"
@@ -65,13 +75,22 @@ const DomoList = (props) => {
 
     const domoNodes = domos.map(domo => {
         return(
-            <div key={domo.id} className="domo">
-                <img src="assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
-                <h3 className="domoName">Name: {domo.name}</h3>
-                <h3 className="domoFood">Favorite Food: {domo.food}</h3>
-                <h3 className="domoAge">Age: {domo.age}</h3>
+            <form id="domoDelete"
+            onSubmit={(e) => handleDelete(e, props.triggerReload, domo)}
+            name="domoDelete"
+            action="/maker"
+            method="DELETE"
+            className="domoDelete"
+            >
+                <div key={domo.id} className="domo">
+                    <img src="assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
+                    <h3 className="domoName">Name: {domo.name}</h3>
+                    <h3 className="domoFood">Favorite Food: {domo.food}</h3>
+                    <h3 className="domoAge">Age: {domo.age}</h3>
+                    <input className="makeDomoSubmit" type="submit" value="Delete" />
 
-            </div>
+                </div>
+            </form>
         );
     });
 

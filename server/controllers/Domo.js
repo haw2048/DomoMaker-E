@@ -41,8 +41,34 @@ const makeDomo = async (req, res) => {
   }
 };
 
+const deleteDomo = async (req, res) => {
+  if (!req.body.name || !req.body.age || !req.body.food) {
+    return res.status(400).json({ error: 'Both name, age, and food are required!' });
+  }
+
+  const domoData = {
+    name: req.body.name,
+    age: req.body.age,
+    food: req.body.food,
+    owner: req.session.account._id,
+  };
+
+  try {
+     await Domo.deleteOne(domoData);
+    
+     return res.json({ redirect: '/maker' });
+  } catch (err) {
+    console.log(err);
+    if (err.code === 11000) {
+      return res.status(400).json({ error: 'Domo already exists!' });
+    }
+    return res.status(500).json({ error: 'An error occured making domo!' });
+  }
+};
+
 module.exports = {
   makerPage,
   makeDomo,
   getDomos,
+  deleteDomo,
 };

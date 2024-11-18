@@ -9,13 +9,24 @@ const handleDomo = (e, onDomoAdded) => {
 
     const name = e.target.querySelector('#domoName').value;
     const age = e.target.querySelector('#domoAge').value;
+    const country = e.target.querySelector('#domoCountry').value;
 
-    if(!name || !age){
+    if(!name || !age || !country){
         helper.handleError('All fields are required!');
         return false;
     } 
 
-    helper.sendPost(e.target.action, {name, age}, onDomoAdded);
+    helper.sendPost(e.target.action, {name, age, country}, onDomoAdded);
+
+    return false;
+
+}
+
+const handleDelete = (e, onDomoAdded, domo) => {
+    e.preventDefault();
+    helper.hideError();
+
+    helper.sendDelete(e.target.action, domo, onDomoAdded);
 
     return false;
 
@@ -32,6 +43,8 @@ const DomoForm = (props) => {
         >
             <label htmlFor="name">Name: </label>
             <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+            <label htmlFor="country">Birth Country: </label>
+            <input id="domoCountry" type="text" name="country" placeholder="Domo Favorite country" />
             <label htmlFor="age">Age: </label>
             <input id="domoAge" type="number" min="0" name="age" />
             <input className="makeDomoSubmit" type="submit" value="Make Domo" />
@@ -62,11 +75,22 @@ const DomoList = (props) => {
 
     const domoNodes = domos.map(domo => {
         return(
-            <div key={domo.id} className="domo">
-                <img src="assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
-                <h3 className="domoName">Name: {domo.name}</h3>
-                <h3 className="domoAge">Age: {domo.age}</h3>
-            </div>
+            <form id="domoDelete"
+            onSubmit={(e) => handleDelete(e, props.triggerReload, domo)}
+            name="domoDelete"
+            action="/maker"
+            method="DELETE"
+            className="domoDelete"
+            >
+                <div key={domo.id} className="domo">
+                    <img src="assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
+                    <h3 className="domoName">Name: {domo.name}</h3>
+                    <h3 className="domoCountry">Birth Country: {domo.country}</h3>
+                    <h3 className="domoAge">Age: {domo.age}</h3>
+                    <input className="makeDomoDelete" type="submit" value="Delete" />
+
+                </div>
+            </form>
         );
     });
 
